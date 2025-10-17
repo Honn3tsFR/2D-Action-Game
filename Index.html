@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Pure Dinguerie — Action Game</title>
+<title>Shooter</title>
 <style>
   html,body{height:100%;margin:0;background:#0b0c10;color:#e6eef8;font-family:Inter, Roboto, Arial;}
   #gameWrap{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px;gap:12px}
@@ -17,7 +17,7 @@
 </head>
 <body>
 <div id="gameWrap">
-  <h1>Pure Dinguerie — Action Game</h1>
+  <h1>Shooter</h1>
   <div class="hud">
     <div class="panel">Vagues: <span id="wave">0</span></div>
     <div class="panel">Score: <span id="score">0</span></div>
@@ -28,14 +28,11 @@
   <canvas id="cv" width="960" height="640"></canvas>
   <div id="overlay">
     <p>Contrôles : <strong>WASD / flèches</strong> pour bouger, <strong>souris</strong> pour viser + clic ou <strong>ESPACE</strong> pour tirer. Sur mobile : toucher l'écran pour tirer et un joystick tactile s'affichera.</p>
-    <p>But : survivre. Fusillade frénétique, vagues, boss, pouvoirs, shop entre vagues. C'est conçu pour être simple à lancer — ouvre ce fichier dans ton navigateur et joue.</p>
+    <p>But : survivre. Fusillade, vagues, boss, pouvoirs, shop entre vagues.</p>
     <p>Astuce : ramasse les power-ups verts (rapid fire), bleus (bouclier) et jaunes (bombe).</p>
   </div>
 </div>
 <script>
-// Pure Dinguerie - compact single-file action game
-// Author: ChatGPT — code generated to be easily playable
-
 // ---- Setup
 const canvas = document.getElementById('cv');
 const ctx = canvas.getContext('2d');
@@ -72,7 +69,7 @@ canvas.addEventListener('touchstart',e=>{e.preventDefault(); const t=e.touches[0
 canvas.addEventListener('touchmove',e=>{e.preventDefault(); const t=e.touches[0]; const r=canvas.getBoundingClientRect(); input.mouseX=(t.clientX-r.left)*(canvas.width/r.width); input.mouseY=(t.clientY-r.top)*(canvas.height/r.height);});
 canvas.addEventListener('touchend',e=>{input.fire=false});
 
-// Audio using WebAudio (simple synths)
+// WebAudio (simple synths)
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function sfx(freq, type='sine', time=0.05, vol=0.08){
   const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
@@ -88,7 +85,7 @@ const items=[];
 const particles=[];
 let lastTime=0;
 
-// Helpers
+// Help
 function rand(a,b){return Math.random()*(b-a)+a}
 function dist(a,b){const dx=a.x-b.x, dy=a.y-b.y; return Math.sqrt(dx*dx+dy*dy)}
 
@@ -108,12 +105,12 @@ function makeParticles(x,y,col,count=12,spd=80){
 // Item spawn
 function spawnItem(x,y,kind){items.push({x,y,r:8,kind,ttl:12});}
 
-// Game loop
+// GameLoop
 function update(dt){
   if(state.paused) return;
   // player movement
   let dx=0,dy=0; if(input.left)dx-=1; if(input.right)dx+=1; if(input.up)dy-=1; if(input.down)dy+=1;
-  // keyboard + mouse slight aiming influence
+  // keyboard + mouse
   if(dx||dy){const len=Math.hypot(dx,dy); dx/=len; dy/=len; }
   player.x += dx * player.speed * dt; player.y += dy * player.speed * dt;
   // clamp
@@ -272,3 +269,4 @@ setInterval(()=>{ if(state.score > state.highScore){ state.highScore = Math.floo
 </script>
 </body>
 </html>
+
